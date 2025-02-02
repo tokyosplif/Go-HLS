@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"os/signal"
 	"syscall"
 )
@@ -42,7 +43,7 @@ func Run() {
 	go func() {
 		log.Println("Starting HTTP server on port 8080...")
 		fmt.Println("Starting HTTP server on port 8080...")
-		if err := api.Server(ctx, nil); err != nil {
+		if err := Server(ctx, http.DefaultServeMux); err != nil {
 			log.Fatalf("Error starting server: %v", err)
 		}
 	}()
