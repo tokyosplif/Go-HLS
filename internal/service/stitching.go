@@ -42,12 +42,8 @@ func (s *stitchingService) ProcessStitching(ctx context.Context, sourceID int, p
 
 	cueOutDuration, err := playlist.GetCueOutDuration(playlistContent)
 	if err != nil || cueOutDuration == 0 {
-		if err != nil {
-			log.Printf("Error extracting cue-out duration: %v", err)
-			return "", fmt.Errorf("unable to extract cue-out duration")
-		}
-		log.Printf("No valid cue-out duration found in playlist")
-		return "", fmt.Errorf("no valid cue-out duration found")
+		log.Printf("Error extracting cue-out duration: %v", err)
+		return "", fmt.Errorf("invalid or missing cue-out duration in playlist")
 	}
 
 	creatives, err := s.creativeRepo.GetCreativesBySourceID(ctx, sourceID, cueOutDuration)
