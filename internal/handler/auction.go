@@ -27,6 +27,7 @@ func (h *AuctionHandler) HandleAuction(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		errorResponse := map[string]string{"error": "Invalid query format. Ensure 'sourceID' and 'maxDuration' are correctly provided."}
 		w.WriteHeader(http.StatusBadRequest)
+
 		if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 			log.Printf("Failed to encode error response: %v", err)
 		}
@@ -39,6 +40,7 @@ func (h *AuctionHandler) HandleAuction(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		errorResponse := map[string]string{"error": "The sourceID value must be a positive integer."}
 		w.WriteHeader(http.StatusBadRequest)
+
 		if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 			log.Printf("Failed to encode error response: %v", err)
 		}
@@ -51,6 +53,7 @@ func (h *AuctionHandler) HandleAuction(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		errorResponse := map[string]string{"error": "The maxDuration value must be a positive integer."}
 		w.WriteHeader(http.StatusBadRequest)
+
 		if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 			log.Printf("Failed to encode error response: %v", err)
 		}
@@ -68,6 +71,7 @@ func (h *AuctionHandler) HandleAuction(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			errorResponse := map[string]string{"error": fmt.Sprintf("Source with ID %d is inactive", sourceID)}
 			w.WriteHeader(http.StatusNotFound)
+
 			if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 				log.Printf("Failed to encode error response: %v", err)
 			}
@@ -76,6 +80,7 @@ func (h *AuctionHandler) HandleAuction(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			errorResponse := map[string]string{"error": err.Error()}
 			w.WriteHeader(http.StatusInternalServerError)
+
 			if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 				log.Printf("Failed to encode error response: %v", err)
 			}
@@ -88,6 +93,7 @@ func (h *AuctionHandler) HandleAuction(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		errorResponse := map[string]string{"error": fmt.Sprintf("No creatives found for SourceID=%d with MaxDuration=%d", sourceID, maxDuration)}
 		w.WriteHeader(http.StatusNotFound)
+
 		if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 			log.Printf("Failed to encode error response: %v", err)
 		}

@@ -26,6 +26,7 @@ func (h *StitchingHandler) HandleStitching(w http.ResponseWriter, r *http.Reques
 		w.Header().Set("Content-Type", "application/json")
 		errorResponse := map[string]string{"error": "Invalid query format. Ensure 'sourceID' is correctly provided."}
 		w.WriteHeader(http.StatusBadRequest)
+
 		if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 			log.Printf("Failed to encode error response: %v", err)
 		}
@@ -37,6 +38,7 @@ func (h *StitchingHandler) HandleStitching(w http.ResponseWriter, r *http.Reques
 		w.Header().Set("Content-Type", "application/json")
 		errorResponse := map[string]string{"error": "Playlist not provided"}
 		w.WriteHeader(http.StatusBadRequest)
+
 		if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 			log.Printf("Failed to encode error response: %v", err)
 		}
@@ -51,6 +53,7 @@ func (h *StitchingHandler) HandleStitching(w http.ResponseWriter, r *http.Reques
 			w.Header().Set("Content-Type", "application/json")
 			errorResponse := map[string]string{"error": err.Error()}
 			w.WriteHeader(http.StatusNotFound)
+
 			if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 				log.Printf("Failed to encode error response: %v", err)
 			}
@@ -58,6 +61,7 @@ func (h *StitchingHandler) HandleStitching(w http.ResponseWriter, r *http.Reques
 			w.Header().Set("Content-Type", "application/json")
 			errorResponse := map[string]string{"error": "Error processing playlist"}
 			w.WriteHeader(http.StatusInternalServerError)
+
 			if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 				log.Printf("Failed to encode error response: %v", err)
 			}
