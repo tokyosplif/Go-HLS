@@ -1,0 +1,3 @@
+TRUNCATE TABLE sources;
+
+DROP TABLE IF EXISTS sources;

@@ -1,0 +1,3 @@
+TRUNCATE TABLE campaigns;
+
+DROP TABLE IF EXISTS campaigns;
