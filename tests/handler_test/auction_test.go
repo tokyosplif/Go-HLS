@@ -58,15 +58,6 @@ func TestAuctionHandler_HandleAuction(t *testing.T) {
 			expectProcessCall:  true,
 		},
 		{
-			name:               "No creatives found",
-			sourceID:           1,
-			maxDuration:        30,
-			mockCreatives:      nil,
-			expectedStatusCode: http.StatusNotFound,
-			expectedBody:       `{"error":"No creatives found for SourceID=1 with MaxDuration=30"}`,
-			expectProcessCall:  true,
-		},
-		{
 			name:               "Error processing auction",
 			sourceID:           1,
 			maxDuration:        30,
@@ -74,6 +65,16 @@ func TestAuctionHandler_HandleAuction(t *testing.T) {
 			mockError:          errors.New("unable to process auction"),
 			expectedStatusCode: http.StatusInternalServerError,
 			expectedBody:       `{"error":"unable to process auction"}`,
+			expectProcessCall:  true,
+		},
+		{
+			name:               "No creatives found",
+			sourceID:           1,
+			maxDuration:        30,
+			mockCreatives:      nil,
+			mockError:          errors.New("no creatives found for SourceID 1 with CueOutDuration 30"),
+			expectedStatusCode: http.StatusNotFound,
+			expectedBody:       `{"error":"No creatives found for SourceID=1 with MaxDuration=30"}`,
 			expectProcessCall:  true,
 		},
 	}
