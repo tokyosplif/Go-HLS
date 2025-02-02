@@ -1,8 +1,8 @@
 package repository
 
 import (
+	"Test-Task-Go/internal/db"
 	"Test-Task-Go/internal/entity"
-	"Test-Task-Go/pkg/db"
 	"context"
 	"database/sql"
 	"log"
