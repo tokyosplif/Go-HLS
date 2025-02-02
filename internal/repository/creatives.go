@@ -50,10 +50,6 @@ func (r *creativeRepo) GetCreativesBySourceID(ctx context.Context, sourceID int,
 		creatives = append(creatives, creative)
 	}
 
-	if len(creatives) == 0 {
-		return creatives, nil
-	}
-
 	return creatives, nil
 }
 
