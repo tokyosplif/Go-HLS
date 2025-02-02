@@ -65,19 +65,19 @@ func (h *AuctionHandler) HandleAuction(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	creatives, err := h.auctionService.ProcessAuction(ctx, sourceID, maxDuration)
-	if len(creatives) == 0 {
-		log.Printf("Found 0 creatives for SourceID=%d with MaxDuration=%d", sourceID, maxDuration)
-		w.Header().Set("Content-Type", "application/json")
-		errorResponse := map[string]string{"error": fmt.Sprintf("No creatives found for SourceID=%d with MaxDuration=%d", sourceID, maxDuration)}
-		w.WriteHeader(http.StatusNotFound)
-
-		if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
-			log.Printf("Failed to encode error response: %v", err)
-		}
-		return
-	}
-
 	if err != nil {
+		if err.Error() == fmt.Sprintf("no creatives found for SourceID %d with CueOutDuration %d", sourceID, maxDuration) {
+			log.Printf("No creatives found for SourceID=%d with MaxDuration=%d", sourceID, maxDuration)
+			w.Header().Set("Content-Type", "application/json")
+			errorResponse := map[string]string{"error": fmt.Sprintf("No creatives found for SourceID=%d with MaxDuration=%d", sourceID, maxDuration)}
+			w.WriteHeader(http.StatusNotFound)
+
+			if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
+				log.Printf("Failed to encode error response: %v", err)
+			}
+			return
+		}
+
 		if err.Error() == fmt.Sprintf("source with ID %d is inactive", sourceID) {
 			log.Printf("Source with ID=%d is inactive", sourceID)
 			w.Header().Set("Content-Type", "application/json")
@@ -87,15 +87,16 @@ func (h *AuctionHandler) HandleAuction(w http.ResponseWriter, r *http.Request) {
 			if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
 				log.Printf("Failed to encode error response: %v", err)
 			}
-		} else {
-			log.Printf("Error processing auction for SourceID=%d: %v", sourceID, err)
-			w.Header().Set("Content-Type", "application/json")
-			errorResponse := map[string]string{"error": err.Error()}
-			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-			if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
-				log.Printf("Failed to encode error response: %v", err)
-			}
+		log.Printf("Error processing auction for SourceID=%d: %v", sourceID, err)
+		w.Header().Set("Content-Type", "application/json")
+		errorResponse := map[string]string{"error": err.Error()}
+		w.WriteHeader(http.StatusInternalServerError)
+
+		if err := json.NewEncoder(w).Encode(errorResponse); err != nil {
+			log.Printf("Failed to encode error response: %v", err)
 		}
 		return
 	}
