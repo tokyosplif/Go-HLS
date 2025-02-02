@@ -44,6 +44,11 @@ func (s *auctionService) ProcessAuction(ctx context.Context, sourceID, maxDurati
 		return nil, fmt.Errorf("unable to retrieve creatives")
 	}
 
+	if len(creatives) == 0 {
+		log.Printf("No creatives found for SourceID=%d with CueOutDuration=%d", sourceID, maxDuration)
+		return nil, fmt.Errorf("no creatives found for SourceID %d with CueOutDuration %d", sourceID, maxDuration)
+	}
+
 	s.creativeRepo.SortCreativesByPrice(creatives)
 
 	return creatives, nil
