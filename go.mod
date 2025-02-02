@@ -1,8 +1,6 @@
 module Test-Task-Go
 
-go 1.22.0
-
-toolchain go1.22.4
+go 1.23
 
 require (
 	github.com/go-redis/redis/v8 v8.11.5
